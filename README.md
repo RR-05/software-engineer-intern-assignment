@@ -61,6 +61,23 @@ I utilized CompletableFuture to handle these concurrent branches.
 The engine is designed to handle these simultaneous database writes, ensuring each parallel branch is independently durable.
 
 
+---
+
+## 💻 Installation & How to Run
+
+Follow these steps to build and execute the Durable Engine on your local machine:
+
+### 1. Prerequisites
+* **Java 17** or higher
+* **Maven 3.6+**
+
+### 2. Setup
+Clone the repository and navigate to the project directory:
+```bash
+git clone https://github.com/RR-05/software-engineer-intern-assignment.git
+cd assignment1-durable-engine
+
+
 
 🧪 Verification \& Crash Recovery
 
