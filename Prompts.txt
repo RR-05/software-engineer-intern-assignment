@@ -1,0 +1,4 @@
+->How to implement a Step Primitive with SQLite persistence?
+->How to implement a Dry Run mode?
+->How to handle workflow versioning when code changes?
+-> Trade-offs: Implicit vs Explicit Versioning?
