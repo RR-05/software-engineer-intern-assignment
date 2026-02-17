@@ -2,10 +2,8 @@
 📖 Table of Contents
 ------------------------------------------------------------------------------------------------------------------------------
 
-Assignment 1: Building a Native Durable Execution Engine
-
-Assignment 2: Java Backend Engineeering Challenge:
-              High-Throughput Fan-Out Engine
+* [Assignment 1: Building a Native Durable Execution Engine](#assignment-1)
+* [Assignment 2: Java Backend Engineering Challenge: High-Throughput Fan-Out Engine](#assignment-2)
 
 --------------------------------------------------------------------------------------------------------------------------------
 
