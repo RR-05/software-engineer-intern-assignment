@@ -1,3 +1,50 @@
+🚀 Durable Execution Engine Project
+📖 Table of Contents
+Assignment 1: Building a Native Durable Execution Engine
+
+Assignment 2: Java Backend Engineeering Challenge:
+              High-Throughput Fan-Out Engine
+
+----------------------------------------------------------------------------------------------------------------------------
+<a name="assignment-2"></a>
+⚡ Durable Execution Engine: Assignment 2 (Fan-Out)
+----------------------------------------------------------------------------------------------------------------------------
+
+📌 Project Concept
+Building on the resilient foundation of Assignment 1, this phase focuses on High Throughput. The engine now supports a "Fan-Out" architecture, allowing it to process a massive volume of tasks simultaneously using a multi-threaded worker pool.
+
+-------------------------------------------------------------------------------------------------------------------------------
+🏗️ Architectural Overview
+--------------------------------------------------------------------------------------------------------------------------------
+
+-> Producer-Consumer Pattern: Implemented a decoupled architecture where a TaskProducer generates work and a pool of TaskWorkers consumes it.
+
+-> Thread Safety & Backpressure: Utilized a LinkedBlockingQueue to safely pass tasks between threads, ensuring no data loss under high load.
+
+-> Fixed Thread Pool: Optimized system resource usage by utilizing a FixedThreadPool with 10 concurrent worker threads to process tasks in parallel.
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------
+📊 Performance Metrics
+------------------------------------------------------------------------------------------------------------------------------------
+
+-> Task Volume: 1,000 unique tasks generated and processed.
+
+-> Concurrency: 10 active worker threads.
+
+-> Execution Time: 1216ms (Total time to finish all 1,000 tasks).
+
+------------------------------------------------------------------------------------------------------------------------------------
+💻 Execution
+------------------------------------------------------------------------------------------------------------------------------------
+
+bash
+mvn clean compile exec:java -Dexec.mainClass="com.assignment.engine.App"
+
+
+<a name="assignment-1"></a>
+
 Durable Execution Engine: Assignment 1
 ----------------------------------------------------------------------------------------------------------------------------
 
@@ -29,19 +76,19 @@ In a distributed system, transient failures are inevitable. This project provide
 2. Setup
 -----------------------------------------------------------------------------------------------------------
 
-```bash
+bash
 git clone https://github.com/RR-05/software-engineer-intern-assignment.git
 cd assignment1-durable-engine
-```
+
 
 ----------------------------------------------------------------------------------------------------------
 3. Execution
 ------------------------------------------------------------------------------------------------------------
 
-```bash
+bash
 mvn clean compile exec:java -Dexec.mainClass="com.assignment.engine.App"
 
-```
+
 -----------------------------------------------------------------------------------------------------------
 🧪 Verification & Crash Recovery
 -----------------------------------------------------------------------------------------------------------
@@ -53,11 +100,11 @@ Simulated Crash: System.exit(0) is triggered.
 
 Recovery: Upon restart, logs confirm the engine skips completed steps:
 
-```bash
+bash
 >>> \[RESUMING] Skipping: create-record
 
 >>> \[RESUMING] Skipping: provision-laptop
-```
+
 
 ------------------------------------------------------------------------------------------------------------------------------------
 🛠️ Technology Stack
@@ -70,8 +117,5 @@ Recovery: Upon restart, logs confirm the engine skips completed steps:
 ->Database: SQLite (JDBC)
 
 ->JSON Library: Jackson Databind
-
-
-
 
 
