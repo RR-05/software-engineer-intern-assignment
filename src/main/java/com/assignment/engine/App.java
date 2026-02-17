@@ -1,47 +1,41 @@
 package com.assignment.engine;
 
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.*;
 
 public class App {
-    public static void main(String[] args) throws Exception {
-        // We use a fixed Workflow ID. In a real app, this would be unique per employee.
-        DurableContext context = new DurableContext("onboarding-123");
+    public static void main(String[] args) throws InterruptedException {
+        // The "Conveyor Belt" that holds our 1,000 tasks
+        BlockingQueue<Task> queue = new LinkedBlockingQueue<>(100);
 
-        System.out.println("--- Starting Employee Onboarding Workflow ---");
+        // 1. Create the Producer (makes 1,000 tasks)
+        Thread producerThread = new Thread(new TaskProducer(queue));
 
-        // STEP 1: Create Record (Sequential)
-        String employeeId = context.step("create-record", () -> {
-            System.out.println("Executing: Creating Employee Record...");
-            return "EMP_99";
-        });
+        // 2. Create a "Worker Pool" of 10 threads to process tasks in parallel
+        ExecutorService workerPool = Executors.newFixedThreadPool(10);
 
-        // STEPS 2 & 3: Provision Laptop & Access (Parallel)
-        // We use CompletableFuture to run these at the same time
-        CompletableFuture<String> laptopTask = CompletableFuture.supplyAsync(() -> 
-            context.step("provision-laptop", () -> {
-                System.out.println("Executing: Provisioning Laptop...");
-                return "MacBook Pro Assigned";
-            })
-        );
+        System.out.println("🚀 Starting Fan-Out Engine...");
+        long startTime = System.currentTimeMillis();
 
-        CompletableFuture<String> accessTask = CompletableFuture.supplyAsync(() -> 
-            context.step("provision-access", () -> {
-                System.out.println("Executing: Granting Server Access...");
-                // SIMULATE CRASH: Uncomment the line below to test durability!
-                System.exit(0); 
-                return "Admin Access Granted";
-            })
-        );
+        // Start the producer
+        producerThread.start();
 
-        // Wait for both parallel steps to finish
-        CompletableFuture.allOf(laptopTask, accessTask).join();
+        // Start 10 workers to start grabbing tasks
+        for (int i = 0; i < 10; i++) {
+            workerPool.execute(new TaskWorker(queue));
+        }
 
-        // STEP 4: Send Welcome Email (Sequential)
-        context.step("send-email", () -> {
-            System.out.println("Executing: Sending Welcome Email to " + employeeId);
-            return "Email Sent!";
-        });
+        // Wait for producer to finish making all 1,000 tasks
+        producerThread.join();
 
-        System.out.println("--- Workflow Completed Successfully! ---");
+        // Monitor the queue until it's empty
+        while (!queue.isEmpty()) {
+            Thread.sleep(100); 
+        }
+
+        long endTime = System.currentTimeMillis();
+        System.out.println("🏁 All tasks finished in: " + (endTime - startTime) + "ms");
+        
+        // Shut down the workers
+        workerPool.shutdownNow();
     }
 }
